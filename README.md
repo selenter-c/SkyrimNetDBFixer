@@ -16,7 +16,7 @@
 ### Установка (из исходников)
 1. **Клонируйте репозиторий**:
    ```bash
-   git clone [https://github.com/selenter-c/SkyrimNetDBFixer.git](https://github.com/selenter-c/SkyrimNetDBFixer.git)
+   git clone https://github.com/selenter-c/SkyrimNetDBFixer.git
    cd SkyrimNetDBFixer
    ```
 2. Установите зависимости:
