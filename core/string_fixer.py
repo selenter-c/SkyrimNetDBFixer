@@ -17,6 +17,8 @@ class StringFixer:
             normalization=None
         )
         
+        fixed = fixed.replace('�', ' ')
+        
         for broken, correct in self.manual_fixes.items():
             fixed = fixed.replace(broken, correct)
             
