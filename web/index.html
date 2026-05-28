@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>SkyrimNet DB Fixer</title>
+    <link rel="shortcut icon" href="icon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <h1>SkyrimNet DB Fixer</h1>
+            </div>
+            <div class="header-actions">
+                <button id="quickEditorBtn" class="btn btn-primary">Открыть быстрый редактор</button>
+                
+                <button id="mainMenuBtn" class="btn btn-secondary" style="display: none;">Вернуться в главное меню</button>
+                <button id="saveBtn" class="btn btn-primary" style="display: none;" disabled>Сохранить изменения</button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div id="gameCheckScreen" class="screen active">
+                <div class="card">
+                    <h2>Проверка процессов</h2>
+                    <div id="gameStatus" style="text-align: center; margin-top: 20px; font-size: 16px;">
+                        Ожидание...
+                    </div>
+                </div>
+            </div>
+
+            <div id="pathSelectScreen" class="screen">
+                <div class="card">
+                    <h2>Выбор базы данных</h2>
+                    
+                    <div class="mode-selector">
+                        <button class="mode-btn active" data-mode="mo2">Mod Organizer 2</button>
+                        <button class="mode-btn" data-mode="game">Оригинальная папка</button>
+                    </div>
+
+                    <div class="path-input-group">
+                        <input type="text" id="pathInput" placeholder="Путь до папки..." class="input" readonly>
+                        <button id="browseFolderBtn" class="btn btn-secondary">Выбрать папку</button>
+                        <button id="scanBtn" class="btn btn-primary">Сканировать</button>
+                    </div>
+
+                    <div id="filesList" class="files-list" style="display: none;"></div>
+
+                    <div class="manual-file-group">
+                        <button id="browseFileBtn" class="btn btn-secondary" style="width: 100%;">Или выберите файл .db напрямую</button>
+                    </div>
+
+                    <div class="hint-box">
+                        <div class="hint-header">
+                            Где найти файлы базы данных?
+                        </div>
+                        <ul class="hint-list">
+                            <li><strong>MO2:</strong> Папка MO2 <code>/overwrite/SKSE/Plugins/SkyrimNet/data/</code></li>
+                            <li><strong>Оригинал:</strong> Папка игры <code>/Data/SkyrimNet/data/</code></li>
+                            <li>Файлы имеют расширение <code>.db</code></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="editorScreen" class="screen">
+                <div class="editor-container">
+                    <div class="tabs">
+                        <button class="tab active" data-table="events">События (events)</button>
+                        <button class="tab" data-table="memories">Воспоминания (memories)</button>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="dataTable" class="data-table">
+                            <thead></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="editor-footer">
+                        <button id="searchBrokenBtn" class="btn btn-primary" style="padding: 10px 30px; font-size: 16px;">Найти сломанные строки</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="fixModal" class="modal">
+                <div class="modal-content modal-xl">
+                    <div class="modal-header">
+                        <h3 style="font-size: 18px;">Сломанные строки</h3>
+                        <button class="btn btn-secondary modal-close" style="padding: 4px 12px;">X</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="fixesContainer" class="fixes-list" style="flex: 1; overflow-y: auto;"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="applyFixesBtn" class="btn btn-primary">Применить исправления</button>
+                        <button class="btn btn-secondary modal-close">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="quickModal" class="modal">
+                <div class="modal-content modal-xl">
+                    <div class="modal-header">
+                        <h3>Быстрый редактор текста</h3>
+                        <button class="btn btn-secondary modal-close" style="padding: 4px 12px;">X</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="fix-card-grid">
+                            <div class="fix-col">
+                                <h4>Оригинальный текст</h4>
+                                <textarea id="quickInput" placeholder="Вставьте текст..."></textarea>
+                            </div>
+                            <div class="fix-col">
+                                <h4>Результат</h4>
+                                <div class="text-box" id="quickOutput" style="user-select: text;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="copyBtn" class="btn btn-secondary">Скопировать</button>
+                        <button id="doQuickFixBtn" class="btn btn-primary">Исправить</button>
+                        <button class="btn btn-secondary modal-close">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="editModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Редактирование ячейки</h3>
+                        <button class="btn btn-secondary modal-close" style="padding: 4px 12px;">X</button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea id="editTextarea" class="textarea"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="saveEditBtn" class="btn btn-primary">Изменить</button>
+                        <button class="btn btn-secondary modal-close">Отмена</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="backupModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Резервная копия</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p style="font-size: 16px;">Создать резервную копию файла базы данных перед открытием?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="backupYesBtn" class="btn btn-primary">Да, создать</button>
+                        <button id="backupNoBtn" class="btn btn-secondary">Нет, просто открыть</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="app-footer">
+            &copy; 2026 Selenter. <a href="https://github.com/selenter-c/SkyrimNetDBFixer" target="_blank">SkyrimNetDBFixer on GitHub</a>. Сделано с ❤!
+        </footer>
+
+        <div id="notification" class="notification"></div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
