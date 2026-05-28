@@ -2,7 +2,7 @@
 
 Инструмент с графическим интерфейсом для автоматического поиска и исправления поврежденных строк (битых символов) в базах данных **SkyrimNet**.
 
-<img width="1381" height="887" alt="image" src="https://github.com/user-attachments/assets/c1cfd941-3743-4b66-8f90-9f4bc63e222b" />
+<img width="1383" height="763" alt="image" src="https://github.com/user-attachments/assets/ca7f4ac7-4a76-40d2-b52d-997396fa7aca" />
 
 
 ## Особенности
@@ -44,7 +44,7 @@
 4. **Применение**: Просмотрите список найденных ошибок. Битое кодирование будет подсвечено красным, а результат фикса — зеленым. Если программа обнаружит нераспознанный символ, он будет выделен желтым маркером.
 5. **Сохранение**: Нажмите "Применить исправления", а затем "Сохранить изменения" в главном меню.
 
-<img width="1911" height="1051" alt="image" src="https://github.com/user-attachments/assets/448942d9-66d2-4fb7-aa2b-5e94bcaf76d5" />
+<img width="1917" height="1048" alt="image" src="https://github.com/user-attachments/assets/08b7b365-564e-4db0-94cf-a0e9cac26a44" />
 
 
 ---
