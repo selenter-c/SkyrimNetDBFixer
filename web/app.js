@@ -8,6 +8,17 @@ let editedCells = new Set();
 document.addEventListener('DOMContentLoaded', () => {
     checkGameStatus();
     setupEventListeners();
+
+    const useFixedBtn = document.getElementById('useFixedBtn');
+    if (useFixedBtn) {
+        useFixedBtn.addEventListener('click', () => {
+            const fixedDiv = document.getElementById('editFixedText');
+            const textarea = document.getElementById('editTextarea');
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = fixedDiv.innerHTML;
+            textarea.value = tempDiv.textContent;
+        });
+    }
 });
 
 function setupEventListeners() {
@@ -226,12 +237,28 @@ async function editCell(table, rowId, column) {
 
     const result = await eel.get_table_data(table)();
     const row = result.rows.find(r => (r.id || r.ID) == rowId);
+    const originalText = row ? row[column] : '';
+    
+    const fixResult = await eel.quick_fix_text(originalText)();
     
     const textarea = document.getElementById('editTextarea');
-    textarea.value = row ? row[column] : '';
+    const originalDiv = document.getElementById('editOriginalText');
+    const fixedDiv = document.getElementById('editFixedText');
+    
+    if (fixResult.success) {
+        originalDiv.innerHTML = fixResult.orig_html;
+        fixedDiv.innerHTML = fixResult.fixed_html;
+        textarea.value = fixResult.fixed;
+    } else {
+        originalDiv.innerHTML = escapeHtml(originalText);
+        fixedDiv.innerHTML = 'Не удалось исправить';
+        textarea.value = originalText;
+    }
+    
     textarea.dataset.table = table;
     textarea.dataset.rowId = rowId;
     textarea.dataset.column = column;
+    textarea.dataset.originalValue = originalText;
     
     document.getElementById('editModal').classList.add('active');
 }
@@ -241,8 +268,15 @@ async function saveCellEdit() {
     const table = textarea.dataset.table;
     const rowId = textarea.dataset.rowId;
     const col = textarea.dataset.column;
+    const newValue = textarea.value;
+    const originalValue = textarea.dataset.originalValue;
     
-    const result = await eel.update_cell(table, rowId, col, textarea.value)();
+    if (newValue === originalValue) {
+        document.getElementById('editModal').classList.remove('active');
+        return;
+    }
+    
+    const result = await eel.update_cell(table, rowId, col, newValue)();
     
     if (result.success) {
         document.getElementById('editModal').classList.remove('active');
@@ -252,6 +286,9 @@ async function saveCellEdit() {
         loadTableData(table);
         hasChanges = result.has_changes;
         updateSaveButton();
+        showNotification('Ячейка обновлена', 'success');
+    } else {
+        showNotification('Ошибка при сохранении: ' + result.error, 'error');
     }
 }
 

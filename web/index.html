@@ -126,16 +126,30 @@
             </div>
 
             <div id="editModal" class="modal">
-                <div class="modal-content">
+                <div class="modal-content modal-xl">
                     <div class="modal-header">
                         <h3>Редактирование ячейки</h3>
                         <button class="btn btn-secondary modal-close" style="padding: 4px 12px;">X</button>
                     </div>
                     <div class="modal-body">
-                        <textarea id="editTextarea" class="textarea"></textarea>
+                        <div class="fix-card-grid">
+                            <div class="fix-col">
+                                <h4>Оригинальный текст</h4>
+                                <div class="text-box" id="editOriginalText" style="user-select: text; min-height: 150px; overflow-y: auto;"></div>
+                            </div>
+                            <div class="fix-col">
+                                <h4>Автоматически исправленный</h4>
+                                <div class="text-box" id="editFixedText" style="user-select: text; min-height: 150px; overflow-y: auto; background: rgba(76, 175, 80, 0.1);"></div>
+                                <button id="useFixedBtn" class="btn btn-primary" style="margin-top: 8px; width: 100%;">Использовать исправленный</button>
+                            </div>
+                            <div class="fix-col">
+                                <h4>Редактируемый текст</h4>
+                                <textarea id="editTextarea" class="textarea" style="min-height: 150px;"></textarea>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="saveEditBtn" class="btn btn-primary">Изменить</button>
+                        <button id="saveEditBtn" class="btn btn-primary">Сохранить</button>
                         <button class="btn btn-secondary modal-close">Отмена</button>
                     </div>
                 </div>
