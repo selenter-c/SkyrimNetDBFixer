@@ -56,5 +56,6 @@
 - Нажмите **"Исправить"**.
 - Используйте кнопку **"Скопировать"**, чтобы мгновенно получить готовый результат в буфер обмена.
 
-<img width="1312" height="522" alt="image" src="https://github.com/user-attachments/assets/19ceafab-ea25-4abb-88c6-133ac60279fb" />
+<img width="1377" height="559" alt="image" src="https://github.com/user-attachments/assets/8ca788db-f7c6-4d5a-b370-ac27b32f314a" />
+
 
